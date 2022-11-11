@@ -6,7 +6,10 @@ After observing this over several years, I noticed a pattern.  One of the runner
 
 While this was a casual observation, I wanted to verify if this was historically true.  In order to investigate this seeming pattern, I created a few sets of python programs which would use an API key, linked to the Google cloud platform. This platform allowed me to write SQL programs to sort through the data that I found. This data was CSV files that contained information about the sport since its beginning. I gathered various forms of information; for example, I collected the results of each race, the drivers who had won the championship, the teams that won the team championship, lap times, and most importantly the major regulation changes and the timing of these changes in relation to the results since the beginning of the sport. 
 
-In my IDE (Integrated development environment) I wrote a python program where I used the dataframe pd.read_csv which reads my CSV file and provides a result.   In order to put that result into the GCP i used the program below:
+In my IDE (Integrated development environment) I wrote a python program where I used the dataframe 
+pd.read_csv which reads my CSV file and provides a result.  
+In order to put that result into the GCP i used the program below:
+
 from google.cloud import bigquery
 from google.oauth2 import service_account
 import pandas as pd
@@ -15,13 +18,21 @@ credentials = service_account.Credentials.from_service_account_file('F:\\Abhi\\c
 client = bigquery.Client('abhinand-playground',credentials)
 # CHANGE NAME OF TABLE HERE AFTER RUNNING CODE TO GET DATAFRAME VALUES
 table_id = 'formula1_env.regchanges'
+
 #write_disposition = 'WRITE_APPEND' will append data into the table.
+
 #write_disposition = 'WRITE_TRUNCATE' If the table already exists, BigQuery overwrites the table data.
+
 #write_disposition = 'WRITE_EMPTY' If the table already exists and contains data, a ‘duplicate’ error is returned
+
 job_config = bigquery.LoadJobConfig(write_disposition='WRITE_TRUNCATE')
+
 job = client.load_table_from_dataframe(df, table_id, job_config=job_config)  # Make an API request.
+
 job.result()  # Wait for the job to complete.
+
 table = client.get_table(table_id)  # Make an API request.
+
 print(
     "Loaded {} rows and {} columns to {}".format(
         table.num_rows, len(table.schema), table_id
