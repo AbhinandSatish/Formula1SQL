@@ -52,6 +52,24 @@ In order to verify if the data is uploaded into GCP the program below uses an SQ
 The code above the sentence "from google.cloud import bigquery" connects to GCP and the next sentence "from google.outh2 import service_account" connects to the service account or the account that refers to your credentials of your GCP service account. So in the program above when I use the "select * from formula1_env.regchanges" basically takes all the information from the data set "regchanges.csv" which can bee seen in the rest of my files. The results produced is below: 
 ![image](https://user-images.githubusercontent.com/117139045/201490363-c9680742-6cc1-47d7-88e9-5f4704d40788.png)
 
+In the case I need to remove a table or a set of datasets I would use the program below:
+
+    from google.cloud import bigquery
+    from google.oauth2 import service_account
+
+    # Construct a BigQuery client object.
+    credentials = service_account.Credentials.from_service_account_file('F:\\Abhi\\code\\Vscode\\phyton\\credentials\\config.json')
+    client = bigquery.Client('abhinand-playground',credentials)
+
+    # If the table does not exist, delete_table raises
+    # google.api_core.exceptions.NotFound unless not_found_ok is True.
+    table_id = 'formula1_env.weather'
+    client.delete_table(table_id, not_found_ok=True)  # Make an API request.
+    print("Deleted table '{}'.".format(table_id))
+    
+The difference of code that is differnt is the  "client.delete_table(table_id, not_found_ok=True)  # Make an API request.
+    print("Deleted table '{}'.".format(table_id))". This is pretty straight forward, "client.delete_table" would refer to the table entered in table_id, in this case it is 'formula1_env.weather' and it uses that ID to sort through all the data sets. That is why it is included with"(table_id, not_found_ok = True)"
+
 
 I made the correlations by writing the SQL program such that it collected certain columns from certain data sets and joined them together. For example, I could take the championship winners from the years 1950 to 1955 and I would join the column from the data set with regulation changes from 1950 to 1955. So if there was a significant change in the regulations, then I would see whether there was a change in the Championship winning team, I did this over all the seasons of  Formula 1 since its inception. 
 
