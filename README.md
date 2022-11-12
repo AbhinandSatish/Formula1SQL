@@ -20,19 +20,12 @@ client = bigquery.Client('abhinand-playground',credentials)
 table_id = 'formula1_env.regchanges'
 
 #write_disposition = 'WRITE_APPEND' will append data into the table.
-
 #write_disposition = 'WRITE_TRUNCATE' If the table already exists, BigQuery overwrites the table data.
-
 #write_disposition = 'WRITE_EMPTY' If the table already exists and contains data, a ‘duplicate’ error is returned
-
 job_config = bigquery.LoadJobConfig(write_disposition='WRITE_TRUNCATE')
-
 job = client.load_table_from_dataframe(df, table_id, job_config=job_config)  # Make an API request.
-
 job.result()  # Wait for the job to complete.
-
 table = client.get_table(table_id)  # Make an API request.
-
 print(
     "Loaded {} rows and {} columns to {}".format(
         table.num_rows, len(table.schema), table_id
