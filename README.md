@@ -43,6 +43,22 @@ The most important parts of this program are the credentials for my personal acc
 
 The credentials is basically the “proof” that I have an account subscribed to GCP which would allow my IDE (visual studio code) to upload my CSV data into the GCP. There is a lot more to this program which I could explain, but essentially, once I added the files to GCP I could use SQL to sort through the data and analyze the changes in the winners of the Championships in Formula 1 over the years. 
 
+In order to verify if the data is uploaded into GCP the program below uses an SQL based program to pull the data of a specific set: 
+         from google.cloud import bigquery
+         from google.oauth2 import service_account
+        import db_dtypes
+          # Construct a BigQuery client object.
+
+        sql = """
+        select * from formula1_env.regchanges
+            """
+        df_1 = client.query(sql).to_dataframe()
+        df_1.head()
+        
+The code above the sentence "from google.cloud import bigquery" connects to GCP and the next sentence "from google.outh2 import service_account" connects to the service account or the account that refers to your credentials of your GCP service account. So in the program above when I use the "select * from formula1_env.regchanges" basically takes all the information from the data set "regchanges.csv" which can bee seen in the rest of my files. The results produced is below: 
+![image](https://user-images.githubusercontent.com/117139045/201490363-c9680742-6cc1-47d7-88e9-5f4704d40788.png)
+
+
 I made the correlations by writing the SQL program such that it collected certain columns from certain data sets and joined them together. For example, I could take the championship winners from the years 1950 to 1955 and I would join the column from the data set with regulation changes from 1950 to 1955. So if there was a significant change in the regulations, then I would see whether there was a change in the Championship winning team, I did this over all the seasons of  Formula 1 since its inception. 
 
 Here are two examples of a set of seasons where a change in regulations resulted in a change in the Championship winners in the following years. During the 2009 Formula 1 Season, Ferrari placed 3rd in the Championship, Red Bull F1 finished in 2nd place and Brawn F1 placed 1st. After the 2009 season,  the FIA changed the  rev-limit (revolutions per minute) to 18,000 rpm, reduction in the ground clearance of the front wing from 150 mm to 50 mm and the introduction of KERS (kinetic energy recovery system) to store some of the energy generated under braking. After this change, in 2010 Red Bull F1 the runner up, placed 1st in the championship and McLarin placed 2nd and Brawn (which became Mercedes in 2010) placed 4th. 
