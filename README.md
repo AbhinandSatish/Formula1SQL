@@ -72,6 +72,12 @@ The difference of code that is differnt is the  "client.delete_table(table_id, n
 
 
 I made the correlations by writing the SQL program such that it collected certain columns from certain data sets and joined them together. For example, I could take the championship winners from the years 1950 to 1955 and I would join the column from the data set with regulation changes from 1950 to 1955. So if there was a significant change in the regulations, then I would see whether there was a change in the Championship winning team, I did this over all the seasons of  Formula 1 since its inception. 
+Here is an example of a code I used to join the tables of constructor_standings and constructor results to refer to which team won which title:
+
+    select * from `formula1_env.constructor_standings` as a 
+    join `formula1_env.constructor_results` as b on b.constructorId = a.constructorId 
+    join `formula1_env.constructors`as c on c.constructorId = b.constructorId
+
 
 Here are two examples of a set of seasons where a change in regulations resulted in a change in the Championship winners in the following years. During the 2009 Formula 1 Season, Ferrari placed 3rd in the Championship, Red Bull F1 finished in 2nd place and Brawn F1 placed 1st. After the 2009 season,  the FIA changed the  rev-limit (revolutions per minute) to 18,000 rpm, reduction in the ground clearance of the front wing from 150 mm to 50 mm and the introduction of KERS (kinetic energy recovery system) to store some of the energy generated under braking. After this change, in 2010 Red Bull F1 the runner up, placed 1st in the championship and McLarin placed 2nd and Brawn (which became Mercedes in 2010) placed 4th. 
 
